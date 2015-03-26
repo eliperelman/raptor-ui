@@ -136,7 +136,7 @@ var basePanel = {
   steppedLine: false,
   tooltip: {
     value_type: 'cumulative',
-    shared: true
+    shared: false
   },
   aliasColors: {},
   seriesOverrides: [],
