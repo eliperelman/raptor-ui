@@ -17,13 +17,24 @@
       "panels": [
         {
           "id": 1,
-          "span": 2,
+          "span": 3,
           "editable": true,
           "type": "text",
           "mode": "markdown",
           "content": "##### *Cold Launch*\n\n* [Marks](#/dashboard/script/mark.js?device=flame-kk&branch=master&memory=319&suite=coldlaunch)\n* [Measures](#/dashboard/script/measure.js?device=flame-kk&branch=master&memory=319&suite=coldlaunch)\n* [Memory](#/dashboard/script/memory.js?device=flame-kk&branch=master&memory=319&suite=coldlaunch)",
           "style": {},
           "title": "flame-kk | 319MB | master",
+          "links": []
+        },
+        {
+          "id": 2,
+          "span": 3,
+          "editable": true,
+          "type": "text",
+          "mode": "markdown",
+          "content": "##### *Cold Launch*\n\n* [Marks](#/dashboard/script/mark.js?device=flame-kk&branch=v2.2&memory=319&suite=coldlaunch)\n* [Measures](#/dashboard/script/measure.js?device=flame-kk&branch=v2.2&memory=319&suite=coldlaunch)\n* [Memory](#/dashboard/script/memory.js?device=flame-kk&branch=v2.2&memory=319&suite=coldlaunch)",
+          "style": {},
+          "title": "flame-kk | 319MB | v2.2",
           "links": []
         }
       ],
