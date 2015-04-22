@@ -66,7 +66,7 @@ var dashboard = {
     }
   ],
   time: {
-    from: 'now-24h',
+    from: 'now-3d',
     to: 'now'
   },
   templating: {
