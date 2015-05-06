@@ -196,7 +196,7 @@ for (var i = 1; i <= rows; i++) {
     var context = app[1];
 
     var panel = _.extend({
-      id: o,
+      id: o + 1,
       title: appName,
       targets: [{
         rawQuery: true,
