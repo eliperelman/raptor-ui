@@ -157,7 +157,8 @@ var apps = [
   ['Phone', 'communications.gaiamobile.org'],
   ['Settings', 'settings.gaiamobile.org'],
   //['Usage', 'costcontrol.gaiamobile.org'],
-  ['Video', 'video.gaiamobile.org']
+  ['Video', 'video.gaiamobile.org'],
+  ['Test Startup Limit', 'test-startup-limit.gaiamobile.org']
 ];
 
 var rows = Math.ceil(apps.length / 3);
@@ -191,12 +192,16 @@ for (var i = 1; i <= rows; i++) {
   var ordinal = i * 3;
 
   for (var o = ordinal - 3; o < ordinal; o++) {
+    if (o + 1 > apps.length) {
+      break;
+    }
+
     var app = apps[o];
     var appName = app[0];
     var context = app[1];
 
     var panel = _.extend({
-      id: o,
+      id: o + 1,
       title: appName,
       targets: [{
         rawQuery: true,
