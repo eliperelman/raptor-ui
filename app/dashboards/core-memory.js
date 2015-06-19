@@ -145,20 +145,8 @@ var basePanel = {
   leftYAxisLabel: 'bytes, average'
 };
 var apps = [
-  ['Calendar', 'calendar.gaiamobile.org'],
-  ['Camera', 'camera.gaiamobile.org'],
-  ['Clock', 'clock.gaiamobile.org'],
-  ['Contacts', 'communications.gaiamobile.org'],
-  ['E-Mail', 'email.gaiamobile.org'],
-  ['FM Radio', 'fm.gaiamobile.org'],
-  ['Gallery', 'gallery.gaiamobile.org'],
-  ['Messages', 'sms.gaiamobile.org'],
-  ['Music', 'music.gaiamobile.org'],
-  ['Phone', 'communications.gaiamobile.org'],
-  ['Settings', 'settings.gaiamobile.org'],
-  //['Usage', 'costcontrol.gaiamobile.org'],
-  ['Video', 'video.gaiamobile.org'],
-  ['Test Startup Limit', 'test-startup-limit.gaiamobile.org']
+  ['Homescreen', 'verticalhome.gaiamobile.org'],
+  ['System', 'system.gaiamobile.org']
 ];
 
 var rows = Math.ceil(apps.length / 3);
@@ -171,7 +159,6 @@ var query = function(series, context, appName) {
     "and memory='" + settings.memory + "'",
     "and branch='" + settings.branch + "'",
     "and context='" + context + "'",
-    "and appName='" + appName + "'",
     "and entryType='memory'",
     "and $timeFilter",
     "group by time($interval)",
@@ -208,21 +195,21 @@ for (var i = 1; i <= rows; i++) {
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.uss',
-        query: query(settings.suite + '.uss', context, appName),
+        query: query(settings.suite + '.uss', context),
         alias: 'USS'
       }, {
         rawQuery: true,
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.pss',
-        query: query(settings.suite + '.pss', context, appName),
+        query: query(settings.suite + '.pss', context),
         alias: 'PSS'
       }, {
         rawQuery: true,
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.rss',
-        query: query(settings.suite + '.rss', context, appName),
+        query: query(settings.suite + '.rss', context),
         alias: 'RSS'
       }]
     }, basePanel);

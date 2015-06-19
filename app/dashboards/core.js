@@ -5,10 +5,11 @@ var settings = _.extend({
   device: 'flame-kk',
   memory: '319',
   branch: 'master',
-  suite: 'coldlaunch'
+  series: 'reboot.*',
+  entryType: 'mark'
 }, ARGS);
 var title = [
-  'Cold Launch: Measures',
+  settings.series + ' ' + settings.entryType,
   settings.device,
   settings.memory + 'MB',
   settings.branch
@@ -145,34 +146,21 @@ var basePanel = {
   leftYAxisLabel: 'Duration, 95th Percentile'
 };
 var apps = [
-  ['Calendar', 'calendar.gaiamobile.org'],
-  ['Camera', 'camera.gaiamobile.org'],
-  ['Clock', 'clock.gaiamobile.org'],
-  ['Contacts', 'communications.gaiamobile.org'],
-  ['E-Mail', 'email.gaiamobile.org'],
-  ['FM Radio', 'fm.gaiamobile.org'],
-  ['Gallery', 'gallery.gaiamobile.org'],
-  ['Messages', 'sms.gaiamobile.org'],
-  ['Music', 'music.gaiamobile.org'],
-  ['Phone', 'communications.gaiamobile.org'],
-  ['Settings', 'settings.gaiamobile.org'],
-  //['Usage', 'costcontrol.gaiamobile.org'],
-  ['Video', 'video.gaiamobile.org'],
-  ['Test Startup Limit', 'test-startup-limit.gaiamobile.org']
+  ['Homescreen', 'verticalhome.gaiamobile.org'],
+  ['System', 'system.gaiamobile.org']
 ];
 
 var rows = Math.ceil(apps.length / 3);
 
-var query = function(series, context, appName) {
+var query = function(context, appName) {
   return [
     "select percentile(value, 95)",
-    "from /" + series + "/",
+    "from /" + settings.series + "/",
     "where device='" + settings.device + "'",
     "and memory='" + settings.memory + "'",
     "and branch='" + settings.branch + "'",
     "and context='" + context + "'",
-    "and appName='" + appName + "'",
-    "and entryType='measure'",
+    "and entryType='" + settings.entryType + "'",
     "and $timeFilter",
     "group by time($interval)",
     "order asc"
@@ -207,8 +195,8 @@ for (var i = 1; i <= rows; i++) {
         rawQuery: true,
         'function': 'percentile',
         column: 'value',
-        series: settings.suite + '.*',
-        query: query(settings.suite + '.*', context, appName),
+        series: settings.series,
+        query: query(context),
         alias: '$1'
       }]
     }, basePanel);

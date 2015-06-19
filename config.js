@@ -7,13 +7,6 @@ define(['settings'], function (Settings) {
         url: 'http://goldiewilson-onepointtwentyone-1.c.influxdb.com:8086/db/raptor',
         username: 'heroku',
         password: 'heroku'
-      },
-      'raptor-grafana': {
-        type: 'influxdb',
-        url: 'http://goldiewilson-onepointtwentyone-1.c.influxdb.com:8086/db/raptor-grafana',
-        username: 'heroku',
-        password: 'heroku',
-        grafanaDB: true
       }
     },
     default_route: '/dashboard/file/raptor.json',
