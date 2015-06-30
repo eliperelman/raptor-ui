@@ -27,17 +27,6 @@
           "links": []
         },
         {
-          "id": 2,
-          "span": 3,
-          "editable": true,
-          "type": "text",
-          "mode": "markdown",
-          "content": "* [Cold Launch Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=512&series=coldlaunch.*)\n* [Cold Launch Memory](#/dashboard/script/apps-memory.js?device=flame-kk&branch=master&memory=512)\n* [Reboot Times](#/dashboard/script/core.js?device=flame-kk&branch=master&memory=512&series=reboot.*)",
-          "style": {},
-          "title": "flame-kk | 512MB | master",
-          "links": []
-        },
-        {
           "id": 3,
           "span": 3,
           "editable": true,
