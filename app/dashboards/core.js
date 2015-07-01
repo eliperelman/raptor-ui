@@ -147,12 +147,13 @@ var basePanel = {
 };
 var apps = [
   ['Homescreen', 'verticalhome.gaiamobile.org'],
-  ['System', 'system.gaiamobile.org']
+  ['System', 'system.gaiamobile.org'],
+  ['Gecko', 'b2g']
 ];
 
 var rows = Math.ceil(apps.length / 3);
 
-var query = function(context, appName) {
+var query = function(context) {
   return [
     "select percentile(value, 95)",
     "from /" + settings.series + "/",
