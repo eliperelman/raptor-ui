@@ -5,10 +5,10 @@ var settings = _.extend({
   device: 'flame-kk',
   memory: '319',
   branch: 'master',
-  suite: 'coldlaunch'
+  suite: 'reboot'
 }, ARGS);
 var title = [
-  'Cold Launch: Memory',
+  'Reboot: Memory',
   settings.device,
   settings.memory + 'MB',
   settings.branch
@@ -159,6 +159,7 @@ var query = function(series, context, appName) {
     "and memory='" + settings.memory + "'",
     "and branch='" + settings.branch + "'",
     "and context='" + context + "'",
+    "and appName='" + appName + "'",
     "and entryType='memory'",
     "and $timeFilter",
     "group by time($interval)",
@@ -195,21 +196,21 @@ for (var i = 1; i <= rows; i++) {
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.uss',
-        query: query(settings.suite + '.uss', context),
+        query: query(settings.suite + '.uss', context, appName),
         alias: 'USS'
       }, {
         rawQuery: true,
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.pss',
-        query: query(settings.suite + '.pss', context),
+        query: query(settings.suite + '.pss', context, appName),
         alias: 'PSS'
       }, {
         rawQuery: true,
         'function': 'mean',
         column: 'value',
         series: settings.suite + '.rss',
-        query: query(settings.suite + '.rss', context),
+        query: query(settings.suite + '.rss', context, appName),
         alias: 'RSS'
       }]
     }, basePanel);

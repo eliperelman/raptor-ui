@@ -261,19 +261,19 @@ var row = {
         query: query('power.video_playback.current', 'video.gaiamobile.org', 'Video'),
         alias: 'current'
       }]
-    }, basePanel),
-    _.extend({
-      id: 9,
-      title: 'Video: Background Video Playback',
-      targets: [{
-        rawQuery: true,
-        'function': 'mean',
-        column: 'value',
-        series: 'power.background_video_playback.current',
-        query: query('power.background_video_playback.current', 'video.gaiamobile.org', 'Video'),
-        alias: 'current'
-      }]
     }, basePanel)
+    //_.extend({
+    //  id: 9,
+    //  title: 'Video: Background Video Playback',
+    //  targets: [{
+    //    rawQuery: true,
+    //    'function': 'mean',
+    //    column: 'value',
+    //    series: 'power.background_video_playback.current',
+    //    query: query('power.background_video_playback.current', 'video.gaiamobile.org', 'Video'),
+    //    alias: 'current'
+    //  }]
+    //}, basePanel)
   ]
 };
 
