@@ -162,7 +162,7 @@ var query = function(series, context, appName) {
 
 var row = {
   title: 'Row 1',
-  height: '250px',
+  height: '300px',
   editable: false,
   collapse: false,
   panels: [
@@ -278,5 +278,8 @@ var row = {
 };
 
 dashboard.rows.push(row);
+
+window.EXPOSED_SETTINGS = settings;
+window.EXPOSED_DASHBOARD = dashboard;
 
 return dashboard;

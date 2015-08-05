@@ -5,14 +5,9 @@ var settings = _.extend({
   device: 'flame-kk',
   memory: '319',
   branch: 'master',
-  suite: 'reboot'
+  entryType: 'mark'
 }, ARGS);
-var title = [
-  'Reboot: Memory',
-  settings.device,
-  settings.memory + 'MB',
-  settings.branch
-].join(' | ');
+var title = 'Details: ' + settings.appName;
 var annotationQuery = [
   "select title, tags, text",
   "from events",
@@ -22,7 +17,7 @@ var annotationQuery = [
   "and $timeFilter"
 ].join(' ');
 var dashboard = {
-  id: 10,
+  id: 15,
   rows: [],
   title: title,
   originalTitle: title,
@@ -66,8 +61,8 @@ var dashboard = {
     }
   ],
   time: {
-    from: 'now-3d',
-    to: 'now'
+    from: settings.from,
+    to: settings.to
   },
   templating: {
     list: []
@@ -86,15 +81,16 @@ var dashboard = {
       "tagsColumn": "tags",
       "textColumn": "text"
     }],
-    "enable": true
+    "enable": false
   },
   refresh: false,
   version: 7,
   hideAllLegends: false
 };
+
+// span: 4, lines: true, pointradius: 2, height: '300px', leftYAxisLabel: 'Duration, 95th Percentile'
 var basePanel = {
   error: false,
-  span: 4,
   editable: false,
   type: 'graph',
   datasource: 'raptor',
@@ -102,24 +98,12 @@ var basePanel = {
   'x-axis': true,
   'y-axis': true,
   y_formats: [
-    'bytes',
+    'ms',
     'none'
   ],
-  grid: {
-    leftMax: null,
-    rightMax: null,
-    leftMin: 0,
-    rightMin: null,
-    threshold1: null,
-    threshold2: null,
-    threshold1Color: 'rgba(216, 200, 27, 0.27)',
-    threshold2Color: 'rgba(234, 112, 112, 0.22)'
-  },
-  lines: true,
   fill: 0,
   linewidth: 1,
   points: true,
-  pointradius: 2,
   bars: false,
   stack: false,
   percentage: false,
@@ -139,32 +123,42 @@ var basePanel = {
     shared: false
   },
   aliasColors: {},
-  seriesOverrides: [],
-  links: [],
-  height: '300px',
-  leftYAxisLabel: 'bytes, average'
+  seriesOverrides: []
 };
-var apps = [
-  ['Homescreen', 'verticalhome.gaiamobile.org'],
-  ['System', 'system.gaiamobile.org']
-];
 
-var rows = Math.ceil(apps.length / 3);
-
-var query = function(series, context, appName) {
+var query = function(select, series) {
   return [
-    "select mean(value)",
+    "select " + select,
     "from /" + series + "/",
     "where device='" + settings.device + "'",
     "and memory='" + settings.memory + "'",
     "and branch='" + settings.branch + "'",
-    "and context='" + context + "'",
-    "and appName='" + appName + "'",
-    "and entryType='memory'",
+    "and context='" + settings.context + "'",
+    "and appName='" + settings.appName + "'",
+    "and entryType='" + settings.entryType + "'",
     "and $timeFilter",
     "group by time($interval)",
     "order asc"
   ].join(' ');
+};
+
+//"legend": {
+//  "show": true,
+//    "values": true,
+//    "min": true,
+//    "max": true,
+//    "current": true,
+//    "total": false,
+//    "avg": true,
+//    "alignAsTable": true
+//},
+
+var row = {
+  title: 'Row ' + i,
+  height: '300px',
+  editable: false,
+  collapse: false,
+  panels: []
 };
 
 for (var i = 1; i <= rows; i++) {
@@ -187,31 +181,36 @@ for (var i = 1; i <= rows; i++) {
     var app = apps[o];
     var appName = app[0];
     var context = app[1];
+    var baseline = app[2];
 
     var panel = _.extend({
       id: o + 1,
       title: appName,
+      grid: {
+        leftMax: null,
+        rightMax: null,
+        leftMin: settings.detail ? null : 0,
+        rightMin: null,
+        threshold1: 1000,
+        threshold2: baseline,
+        threshold1Color: 'rgba(216, 200, 27, 0.40)',
+        threshold2Color: 'rgba(234, 112, 112, 0.40)',
+        thresholdLine: true
+      },
+      "links": [{
+        "type": "absolute",
+        "name": "App Details",
+        "title": "Details...",
+        "url": "#/",
+        "params": "var-wat=3"
+      }],
       targets: [{
         rawQuery: true,
-        'function': 'mean',
+        'function': settings.detail ? undefined : 'percentile',
         column: 'value',
-        series: settings.suite + '.uss',
-        query: query(settings.suite + '.uss', context, appName),
-        alias: 'USS'
-      }, {
-        rawQuery: true,
-        'function': 'mean',
-        column: 'value',
-        series: settings.suite + '.pss',
-        query: query(settings.suite + '.pss', context, appName),
-        alias: 'PSS'
-      }, {
-        rawQuery: true,
-        'function': 'mean',
-        column: 'value',
-        series: settings.suite + '.rss',
-        query: query(settings.suite + '.rss', context, appName),
-        alias: 'RSS'
+        series: settings.series,
+        query: query(context, appName),
+        alias: '$1'
       }]
     }, basePanel);
 

@@ -21,7 +21,7 @@
           "editable": true,
           "type": "text",
           "mode": "markdown",
-          "content": "* [Cold Launch Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=319&series=coldlaunch.*)\n* [Cold Launch Memory](#/dashboard/script/apps-memory.js?device=flame-kk&branch=master&memory=319)\n* [Reboot Times](#/dashboard/script/core.js?device=flame-kk&branch=master&memory=319&series=reboot.*)\n* [Reboot Memory](#/dashboard/script/core-memory.js?device=flame-kk&branch=master&memory=319&series=reboot.*)",
+          "content": "* [App Cold Launch Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=319&series=coldlaunch.*)\n* [App visuallyLoaded Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=319&series=coldlaunch.visuallyLoaded)\n* [App Cold Launch Memory](#/dashboard/script/apps-memory.js?device=flame-kk&branch=master&memory=319)\n* [Reboot Times](#/dashboard/script/core.js?device=flame-kk&branch=master&memory=319&series=reboot.*)\n* [Reboot Memory](#/dashboard/script/core-memory.js?device=flame-kk&branch=master&memory=319&series=reboot.*)",
           "style": {},
           "title": "flame-kk | 319MB | master",
           "links": []
@@ -32,7 +32,7 @@
           "editable": true,
           "type": "text",
           "mode": "markdown",
-          "content": "* [Cold Launch Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=1024&series=coldlaunch.*)\n* [Cold Launch Memory](#/dashboard/script/apps-memory.js?device=flame-kk&branch=master&memory=1024)\n* [Reboot Times](#/dashboard/script/core.js?device=flame-kk&branch=master&memory=1024&series=reboot.*)\n* [Current](#/dashboard/script/current.js?device=flame-kk&branch=master&memory=1024)",
+          "content": "* [App Cold Launch Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=1024&series=coldlaunch.*)\n* [App visuallyLoaded Times](#/dashboard/script/apps.js?device=flame-kk&branch=master&memory=1024&series=coldlaunch.visuallyLoaded)\n* [App Cold Launch Memory](#/dashboard/script/apps-memory.js?device=flame-kk&branch=master&memory=1024)\n* [Reboot Times](#/dashboard/script/core.js?device=flame-kk&branch=master&memory=1024&series=reboot.*)\n* [Reboot Memory](#/dashboard/script/core-memory.js?device=flame-kk&branch=master&memory=1024&series=reboot.*)\n* [Power](#/dashboard/script/current.js?device=flame-kk&branch=master&memory=1024)",
           "style": {},
           "title": "flame-kk | 1GB | master",
           "links": []

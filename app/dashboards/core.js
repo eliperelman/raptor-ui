@@ -172,7 +172,7 @@ for (var i = 1; i <= rows; i++) {
 
   var row = {
     title: 'Row ' + i,
-    height: '250px',
+    height: '300px',
     editable: false,
     collapse: false,
     panels: []
@@ -207,5 +207,9 @@ for (var i = 1; i <= rows; i++) {
 
   dashboard.rows.push(row);
 }
+
+window.EXPOSED_SETTINGS = settings;
+window.EXPOSED_DASHBOARD = dashboard;
+window.EXPOSED_APPS = apps;
 
 return dashboard;

@@ -106,16 +106,6 @@ var basePanel = {
     'ms',
     'none'
   ],
-  grid: {
-    leftMax: null,
-    rightMax: null,
-    leftMin: 0,
-    rightMin: null,
-    threshold1: null,
-    threshold2: null,
-    threshold1Color: 'rgba(216, 200, 27, 0.27)',
-    threshold2Color: 'rgba(234, 112, 112, 0.22)'
-  },
   lines: true,
   fill: 0,
   linewidth: 1,
@@ -141,38 +131,54 @@ var basePanel = {
   },
   aliasColors: {},
   seriesOverrides: [],
-  links: [],
   height: '300px',
   leftYAxisLabel: 'Duration, 95th Percentile'
 };
 var apps = [
-  ['Calendar', 'calendar.gaiamobile.org'],
-  ['Camera', 'camera.gaiamobile.org'],
-  ['Clock', 'clock.gaiamobile.org'],
-  ['Contacts', 'communications.gaiamobile.org'],
-  ['E-Mail', 'email.gaiamobile.org'],
-  ['FM Radio', 'fm.gaiamobile.org'],
-  ['Gallery', 'gallery.gaiamobile.org'],
-  ['Messages', 'sms.gaiamobile.org'],
-  ['Music', 'music.gaiamobile.org'],
-  ['Phone', 'communications.gaiamobile.org'],
-  ['Settings', 'settings.gaiamobile.org'],
-  ['Video', 'video.gaiamobile.org'],
-  ['Test Startup Limit', 'test-startup-limit.gaiamobile.org']
+  // appName, origin, v2.2 baseline
+  ['Calendar', 'calendar.gaiamobile.org', 1454],
+  ['Camera', 'camera.gaiamobile.org', 1492],
+  ['Clock', 'clock.gaiamobile.org', 1232],
+  ['Contacts', 'communications.gaiamobile.org', 773],
+  ['E-Mail', 'email.gaiamobile.org', 2129],
+  ['FM Radio', 'fm.gaiamobile.org', 604],
+  ['Gallery', 'gallery.gaiamobile.org', 1113],
+  ['Messages', 'sms.gaiamobile.org', 1340],
+  ['Music', 'music.gaiamobile.org', 1066],
+  ['Phone|Dialer', 'communications.gaiamobile.org', 851],
+  ['Settings', 'settings.gaiamobile.org', 2474],
+  ['Video', 'video.gaiamobile.org', 1115],
+  ['Test Startup Limit', 'test-startup-limit.gaiamobile.org', null]
   //['Usage', 'costcontrol.gaiamobile.org'],
 ];
 
 var rows = Math.ceil(apps.length / 3);
 
 var query = function(context, appName) {
+  var appFilter = "and appName='" + appName + "'";
+
+  if (appName.indexOf('|') !== -1) {
+    appFilter = appName
+      .split('|')
+      .map(function(appName) {
+        return "appName='" + appName + "'";
+      })
+      .join(' or ');
+
+    appFilter = "and (" + appFilter + ")";
+  }
+
+  //var select = settings.detail ? 'value' : 'percentile(value, 95)';
+  var select = 'percentile(value, 95)';
+
   return [
-    "select percentile(value, 95)",
+    "select " + select,
     "from /" + settings.series + "/",
     "where device='" + settings.device + "'",
     "and memory='" + settings.memory + "'",
     "and branch='" + settings.branch + "'",
     "and context='" + context + "'",
-    "and appName='" + appName + "'",
+    appFilter,
     "and entryType='" + settings.entryType + "'",
     "and $timeFilter",
     "group by time($interval)",
@@ -184,7 +190,7 @@ for (var i = 1; i <= rows; i++) {
 
   var row = {
     title: 'Row ' + i,
-    height: '250px',
+    height: '300px',
     editable: false,
     collapse: false,
     panels: []
@@ -200,10 +206,48 @@ for (var i = 1; i <= rows; i++) {
     var app = apps[o];
     var appName = app[0];
     var context = app[1];
+    var baseline = app[2];
+
+    var queryStringRaw = {
+      device: settings.device,
+      branch: settings.branch,
+      memory: settings.memory,
+      context: context,
+      appName: appName,
+      baseline: baseline
+    };
+
+    var queryString = Object
+      .keys(queryStringRaw)
+      .reduce(function(accumulator, key) {
+        var value = queryStringRaw[key];
+
+        return accumulator + '&' +
+          encodeURIComponent(key) + '=' + encodeURIComponent(value);
+      }, '');
 
     var panel = _.extend({
       id: o + 1,
       title: appName,
+      grid: {
+        leftMax: null,
+        rightMax: null,
+        leftMin: 0,
+        rightMin: null,
+        threshold1: 1000,
+        threshold2: baseline,
+        threshold1Color: 'rgba(216, 200, 27, 0.40)',
+        threshold2Color: 'rgba(234, 112, 112, 0.40)',
+        thresholdLine: true
+      },
+      links: [],
+      //links: [{
+      //  type: 'absolute',
+      //  name: 'App Details',
+      //  title: 'Details...',
+      //  url: '#/dashboard/script/app-details.js?' + queryString,
+      //  params: 'var-wat=3'
+      //}],
       targets: [{
         rawQuery: true,
         'function': 'percentile',
@@ -219,5 +263,9 @@ for (var i = 1; i <= rows; i++) {
 
   dashboard.rows.push(row);
 }
+
+window.EXPOSED_SETTINGS = settings;
+window.EXPOSED_DASHBOARD = dashboard;
+window.EXPOSED_APPS = apps;
 
 return dashboard;
